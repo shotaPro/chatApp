@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 
+use App\Http\Controllers\PostController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,3 +30,18 @@ Route::middleware([
 });
 
 Route::get('/redirect', [HomeController::class, 'redirect']);
+
+Route::post('/post_message', [HomeController::class, 'post_message']);
+
+Route::get('/post_delete/{id}', [HomeController::class, 'post_delete']);
+
+Route::get('/post_edit_show/{id}', [HomeController::class, 'post_edit_show']);
+
+Route::post('/post_edit/{id}', [HomeController::class, 'post_edit']);
+
+Route::get('/post_search', [HomeController::class, 'post_search']);
+
+Route::get('/my_post_list', [HomeController::class, 'my_post_list']);
+
+Route::post('/post_reply', [HomeController::class, 'post_reply']);
+

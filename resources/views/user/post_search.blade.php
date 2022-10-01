@@ -19,13 +19,10 @@
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="btn btn-primary" href="{{ url('/my_post_list') }}">あなたの投稿一覧を見る</a>
-                          </li>
                     </ul>
                     <form action="{{ url('/post_search') }}" method="GET" class="d-flex">
                         @csrf
-                        <input name="search" type="text" class="form-control me-2" type="search" placeholder="名前や投稿キーワード">
+                        <input style="width:250px;" name="search" type="text" placeholder="名前や投稿キーワードで検索"class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
                 </div>
@@ -33,14 +30,6 @@
         </nav>
 
         <div class="container text-center">
-            <form action="{{ url('/post_message') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <textarea style="width:500px; height:200px;" name="message" placeholder="メッセージを自由に投稿しましょう"></textarea>
-                <br>
-                ※必須<input name="image" class="btn btn-primary"type="file">
-                <button type="submit" class="btn btn-secondary">送信する</button>
-            </form>
-
 
             <h1 style="margin-top: 20px">全ての投稿</h1>
             @foreach ($post as $post)
@@ -50,22 +39,11 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ $post->postByName }}</h5>
                             <p class="card-text">{{ $post->status }}</p>
-                            <a class="btn btn-primary" href="javascript:void(0);" onclick="reply(this)" data-postid="{{ $post->id }}">返信する</a>
-                            @if($post->postBy == $user_id)
+                            <a class="btn btn-primary" href="javascript:void(0);" onclick="reply(this);">返信する</a>
                             <a class="btn btn-danger" onclick="return confirm('本当に削除してもよろしいですか？')"
                                 href="{{ url('post_delete', $post->id) }}">削除する</a>
                             <a class="btn btn-secondary" href="{{ url('post_edit_show', $post->id) }}">編集する</a>
-                            @endif
                         </div>
-                        @foreach($reply as $replys)
-                        @if($replys->message_id == $post->id)
-                        <div style="padding-Left: 3%; padding_bottom: 10px; padding_bottom: 10px;">
-                            <b>{{ $replys->name }}</b>
-                            <p>{{ $replys->reply }}</p>
-                            <a style="color: blue"href="javascript::void(0)" onclick="reply(this)" data-postid="{{ $post->id }}">返信する</a>
-                        </div>
-                        @endif
-                        @endforeach
                     </div>
                 </div>
             @endforeach
@@ -73,23 +51,15 @@
 
 
 
-
         <div style="display:none; margin-top: 30px" class="replyDiv text-center">
-            <form action="{{ url('post_reply') }}" method="POST">
-                @csrf
-                <input type="text" id="replyId" name="replyId" hidden="">
-                <textarea name="reply" style="height: 100px; width: 500px" placeholder="返信しよう"></textarea>
-                <br>
-                <button type="submit"  class="btn btn-primary" onclick="reply(this);">Reply</button>
-                <a href="javascript:void(0);" class="btn btn-primary close" onclick="cancel(this);">やめる</a>
-            </form>
+            <textarea name="" style="height: 100px; width: 500px" placeholder="返信しよう"></textarea>
+            <br>
+            <a href="" class="btn btn-primary" onclick="reply(this);">Reply</a>
+            <a href="javascript:void(0);" class="btn btn-primary close" onclick="cancel(this);">やめる</a>
         </div>
 
         <script type="text/javascript">
             function reply(caller) {
-
-                document.getElementById('replyId').value = $(caller).attr('data-postid');
-
                 $('.replyDiv').insertAfter($(caller));
                 $('.replyDiv').show();
             }
